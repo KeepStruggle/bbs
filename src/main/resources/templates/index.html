@@ -1,18 +1,18 @@
-﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+﻿<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>短消息平台</title>
-<link type="text/css" rel="stylesheet" href="css/sms.css" />
-<script type="text/javascript" src="scripts/jquery.js"></script>
+<link type="text/css" rel="stylesheet" th:href="@{css/sms.css}" />
+<script type="text/javascript" th:src="@{scripts/jquery-1.12.4.js}"></script>
 <!--[if IE 6]>
-<script type="text/javascript" src="scripts/DD_belatedPNG.js"></script>
+<script type="text/javascript" th:src="@{scripts/DD_belatedPNG.js}"></script>
 <script type="text/javascript">DD_belatedPNG.fix('.png');</script>
 <![endif]-->
 <script type="text/javascript">
 $(function(){
 	$(".btn-reg").bind("click", function(){
-		window.location.href = "register.jsp";
+		window.location.href = "register";
 	});
 });
 
@@ -21,11 +21,11 @@ function check(){
 	var password = document.getElementById("password");
 	var error = document.getElementById("error");
 	if(username.value == ""){
-		error.innerHTML="&lt;font color=\"red\">用户名不能为空！&lt;/font>";
+		error.innerHTML="用户名不能为空!";
 		username.focus();
 		return false;
 	}else if(password.value == ""){
-		error.innerHTML="&lt;font color=\"red\">密码不能为空！&lt;/font>";
+		error.innerHTML="密码不能为空！";
 		password.focus();				
 		return false;
 	}
@@ -36,13 +36,15 @@ function check(){
 <body>
 <div id="loginTitle" class="png"></div>
 <div id="loginForm" class="userForm png">
-	<form method="post" name="loginform" action="UserServlet?action=login" onsubmit = "return check()">		
-		<dl>			
-			<div id="error">${error}</div>
+	<form method="post" name="loginform" th:action="@{/doLogin}" onSubmit="return check()">
+		<dl>
+			<p id="error" style="color: red"></p>
+			<!--	如果msg为空，不显示		-->
+			<p style="color: red" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></p>
 			<dt>用户名：</dt>
-			<dd><input type="text" name="username" /></dd>
+			<dd><input type="text" name="uname" id="username"/></dd>
 			<dt>密　码：</dt>
-			<dd><input type="password" name="password" /></dd>
+			<dd><input type="password" name="upwd" id="password"/></dd>
 		</dl>
 		<div class="buttons">
 			<input class="btn-login png" type="submit" name="submit" value=" " /><input class="btn-reg png" type="button" name="register" value=" " />

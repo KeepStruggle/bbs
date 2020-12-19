@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>读短消息</title>
+	<link type="text/css" rel="stylesheet" th:href="@{/css/sms.css}" />
+	<script type="text/javascript" th:src="@{/scripts/jquery-1.12.4.js}"></script>
+	<link rel="stylesheet" href="../static/css/sms.css">
+</head>
+	<body>
+		<div id="main">
+			<div class="mainbox">
+				<div class="title readMessage png"></div>
+				<div class="menu">
+					<span>当前用户：<a href="main.html">[[${session.user.uname }]]</a></span>
+					<span><a href="">发短消息</a></span>
+					<span><a href="">退出</a></span>
+				</div>
+				<div class="content">
+					<div class="message">
+						
+							<div class="tmenu">
+								<ul class="clearfix">
+<!--									<li>-->
+<!--										发送给：-->
+<!--										<span id="tname" th:text="${fname }" th:if="${not #strings.isEmpty(fname)}"></span>-->
+<!--										<input type="hidden" id="testSelect1" th:value="${fname }" />-->
+<!--										&lt;!&ndash;									&ndash;&gt;-->
+<!--										<select name="toUser" onchange="show()" id="testSelect" >-->
+<!--											<option selected="selected" value="zhangsan" >zhangsan</option>-->
+<!--											<option value="lisi">lisi</option>-->
+<!--											<option value="wangwu">wangwu</option>-->
+
+<!--										</select>-->
+
+<!--									</li>-->
+<!--									<li>标题：<input type="text" name="title" id="title" th:value="${message==null ? '':message.getTitle() }"  /></li>-->
+
+									<li>题目：<input type="text" disabled=“disabled” th:value="${message.getTitle() }"  /></li>
+
+									<li>来自：<input type="text" disabled=“disabled” th:value="${fname }"  /></li>
+
+									<li>时间：<input type="text" disabled=“disabled” th:value="${message==null ? '':message.getDate() }"  /></li>
+
+								</ul>
+							</div>
+					  	 	<div class="view">
+								<p th:text="${message.getContent() }"></p>
+							</div>
+				  	 	
+					</div>
+				</div>
+				<div style=" text-align:center;"><a th:href="@{/main.html}"><input type="button" value="返回" style="background-color: #3C9EC2;border: none;color: white;padding: 10px 25px;text-align: center;border-radius:45%;font-size: 16px;" ></a></div>
+			</div>
+		</div>
+	</body>
+</html>

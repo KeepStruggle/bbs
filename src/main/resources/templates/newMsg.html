@@ -1,6 +1,12 @@
-<%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
-<%@ include file="header.jsp"  %>
-<script type="text/javascript" src="scripts/jquery-1.12.4.js"></script>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>学士后 在线短信平台</title>
+	<link type="text/css" rel="stylesheet" th:href="@{/css/sms.css}" />
+	<script type="text/javascript" th:src="@{/scripts/jquery-1.12.4.js}"></script>
+</head>
 <script type="text/javascript">
   function check(){
 		var title = document.getElementById("title");
@@ -14,7 +20,8 @@
 		}
 		return true;
 	}
-  
+
+	//下拉框的值改变时，修改对应的span标签的值
   function show(){
 	  $("#tname").html($('#testSelect option:selected').val());
   }
@@ -23,40 +30,39 @@
   $(function(){
 	  var tname=$("#testSelect1").val();
 	  $("#testSelect option[value='"+tname+"']").attr("selected", true);
-	    
+
   })
+
 </script>
   
  <body>
  <form action="MessageServlet?action=add" method="post" onsubmit="return check()">
 	<div id="main">
-		<div class="mainbox">			
+		<div class="mainbox">
 			<div class="menu">
-				<span>当前用户：<a href="main.jsp">${user.uname }</a></span>
-				<span><a href="">发短消息</a></span>
+<!--				此处@{/main.html}加/，是为了确保是发送/main.html请求，不然有可能出现在不同路径下拼接的url，比如/messge/read/main.html等-->
+				<span>当前用户：<a th:href="@{/main.html}">[[${session.user.uname }]]</a></span>
 				<span><a href="">退出</a></span>
 			</div>
 			<div class="content">
 				<div class="message">
-					
+
 						<div class="tmenu">
 							<ul class="clearfix">
 								<li>
 									发送给：
-									<span id="tname">
-										<c:if test="${!empty message }">${fname }</c:if>
-										<c:if test="${empty message }">zhangsan</c:if>		
-									</span>
-									<input type="hidden" id="testSelect1" value="${fname }" />
-									
-									<select name="toUser" onchange="show()" id="testSelect">
-										<option selected="selected" value="zhangsan">zhangsan</option>
+									<span id="tname" th:text="${fname }" th:if="${not #strings.isEmpty(fname)}"></span>
+									<input type="hidden" id="testSelect1" th:value="${fname }" />
+<!--									-->
+									<select name="toUser" onchange="show()" id="testSelect" >
+										<option selected="selected" value="zhangsan" >zhangsan</option>
 										<option value="lisi">lisi</option>
 										<option value="wangwu">wangwu</option>
 
 									</select>
+
 								</li>								
-								<li>标题：<input type="text" name="title" id="title" value="${message.title }"/></li>
+								<li>标题：<input type="text" name="title" id="title" th:value="${message==null ? '':message.getTitle() }"  /></li>
 							</ul>
 						</div>
 						<div class="view">
