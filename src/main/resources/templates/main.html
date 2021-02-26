@@ -4,24 +4,33 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>学士后 在线短信平台</title>
-	<link type="text/css" rel="stylesheet" th:href="@{css/sms.css}" />
-	<script type="text/javascript" th:src="@{scripts/jquery-1.12.4.js}"></script>
+	<link type="text/css" rel="stylesheet" th:href="@{/css/sms.css}" />
+	<script type="text/javascript" th:src="@{/scripts/jquery-1.12.4.js}"></script>
 </head>
 <script type="text/javascript">
 	$(function(){
 		$.ajax({
 			url:"/message/list",
 			dataType:"json",
-			type:"post",
 			success:function(data){
 				//循环后端返回的数据
 				var html="";
 				$(data).each(function(i,v){
-					html+="<li class='unReaded'><em>"+v.date+"</em><em><a href='message/reply/"+v.id+"'>回信</a></em><em><a href='javascript:void(0)' onclick='del(this,"+v.id+")'>删除</a></em><p><strong><a href='message/read/"+v.id+"'>"+v.title+"</a></strong></p></li>";
+					if (v.state == 1) {
+						html += "<li class='unReaded'><em>" + v.date + "</em><em><a href='message/reply/" + v.id + "'>回信</a></em><em><a href='javascript:void(0)' onclick='del(this," + v.id + ")'>删除</a></em><p><strong><a href='message/read/" + v.id + "'>" + v.title + "</a></strong></p></li>";
+					}else{
+						html+="<li class='readed'><em>"+v.date+"</em><em><a href='message/reply/"+v.id+"'>回信</a></em><em><a href='javascript:void(0)' onclick='del(this,"+v.id+")'>删除</a></em><p><strong><a href='message/read/"+v.id+"'>"+v.title+"</a></strong></p></li>";
+
+					}
 				});
 				$("ul").html(html);
 			}
 		});
+
+		//用来在发送消息成功，返回该页面时，提示用户发送成功
+		if($("#msg").val() != null){
+			alert($("#msg").val());
+		}
 	})
 
 	function del(obj, id){
@@ -53,10 +62,12 @@
 		<div class="title myMessage png"></div>		
 		<div class="menu">
 			<span>当前用户:<a th:href="@{/main.html}">[[${session.user.uname }]]</a></span>
-			<span><a th:href="@{message/sendNewMsg}">发短消息</a></span>
-			<span><a th:href="@{exit}">退出</a></span>
+			<span><a th:href="@{/message/sendNewMsg}">发短消息</a></span>
+			<span><a th:href="@{/exit}">退出</a></span>
 		</div>
-		<div id="error"></div>
+		<div>
+			<input id="msg" type="hidden" th:if="${not #strings.isEmpty(session.msg)}" th:value="${session.msg }" />
+		</div>
 		<div class="content messageList">
 			<ul>
 

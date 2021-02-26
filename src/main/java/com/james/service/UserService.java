@@ -12,4 +12,8 @@ public interface UserService {
 
     //根据用户id获取用户名
     String findByUid(int id);
+
+    //根据用户名获取用户id
+    int findByName(String uname);
+
 }

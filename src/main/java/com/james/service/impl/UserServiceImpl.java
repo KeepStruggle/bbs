@@ -1,7 +1,9 @@
 package com.james.service.impl;
 
+import com.james.mapper.UserMapper;
 import com.james.pojo.User;
 import com.james.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -13,6 +15,10 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class UserServiceImpl implements UserService {
+
+    @Autowired
+    private UserMapper userMapper;
+
     @Override
     public boolean register(User user) {
         return false;
@@ -20,7 +26,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String findByUid(int id) {
-        return null;
+        User user = userMapper.findByUid(id);
+        return user.getUname();
+    }
+
+    @Override
+    public int findByName(String uname) {
+        User user = userMapper.findByName(uname);
+        return user.getUid();
     }
 
     @Override
@@ -29,6 +42,8 @@ public class UserServiceImpl implements UserService {
         user.setUname(uname);
         user.setUpwd(upwd);
 
-        return null;
+        User user1 = userMapper.FingByNameAndPwd(user);
+
+        return user1;
     }
 }

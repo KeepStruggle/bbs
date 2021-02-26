@@ -19,5 +19,5 @@ public interface MessageService {
     boolean del(int id);
 
     //修改消息状态
-    boolean update(int id,int state);
+    boolean update(int id);
 }

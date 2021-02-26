@@ -22,27 +22,36 @@
 	}
 
 	//下拉框的值改变时，修改对应的span标签的值
-  function show(){
-	  $("#tname").html($('#testSelect option:selected').val());
-  }
+  // function show(){
+  // 	alert($('#testSelect option:selected').val());
+  // 	$("#tname").html($('#testSelect option:selected').val());
+  // }
   
   	//根据后台传过来的值动态设置下拉框选中
   $(function(){
 	  var tname=$("#testSelect1").val();
 	  $("#testSelect option[value='"+tname+"']").attr("selected", true);
 
+
+	  //用来在发送消息失败，返回该页面时，提示用户发送失败
+	  if($("#msg").val() != null){
+		  alert($("#msg").val());
+	  }
   })
 
 </script>
   
  <body>
- <form action="MessageServlet?action=add" method="post" onsubmit="return check()">
+ <form action="/message/doSendNewMsg" method="post" onsubmit="return check()">
 	<div id="main">
 		<div class="mainbox">
 			<div class="menu">
 <!--				此处@{/main.html}加/，是为了确保是发送/main.html请求，不然有可能出现在不同路径下拼接的url，比如/messge/read/main.html等-->
 				<span>当前用户：<a th:href="@{/main.html}">[[${session.user.uname }]]</a></span>
 				<span><a href="">退出</a></span>
+			</div>
+			<div>
+				<input id="msg" type="hidden" th:if="${not #strings.isEmpty(msg)}" th:value="${msg }" />
 			</div>
 			<div class="content">
 				<div class="message">
@@ -51,10 +60,10 @@
 							<ul class="clearfix">
 								<li>
 									发送给：
-									<span id="tname" th:text="${fname }" th:if="${not #strings.isEmpty(fname)}"></span>
+<!--									<span id="tname" th:text="${fname }" th:if="${not #strings.isEmpty(fname)}"></span>-->
 									<input type="hidden" id="testSelect1" th:value="${fname }" />
-<!--									-->
-									<select name="toUser" onchange="show()" id="testSelect" >
+
+									<select name="toUser" th:onchange="show()" id="testSelect" >
 										<option selected="selected" value="zhangsan" >zhangsan</option>
 										<option value="lisi">lisi</option>
 										<option value="wangwu">wangwu</option>

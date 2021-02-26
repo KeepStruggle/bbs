@@ -1,5 +1,6 @@
 package com.james.controller;
 
+import com.james.mapper.UserMapper;
 import com.james.pojo.User;
 import com.james.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +26,13 @@ public class UserController {
     @Autowired
     public UserService userService;
 
+    @Autowired
+    private UserMapper userMapper;
+
     @PostMapping("/doLogin")
     public String doLogin(@RequestParam("uname") String uname, @RequestParam("upwd") String upwd, Model model, HttpSession session){
-//        User user = userService.login(uname, upwd);
-        User user = new User(1,"郑弘湛","123456","1927666233@qq.com");
+        User user = userService.login(uname, upwd);
+//        User user = new User(1,"郑弘湛","123456","1927666233@qq.com");
         if(user != null){
             session.setAttribute("user", user);
             //使用重定向到main.html, 这是一个请求，定义在MyMvcConfig里面
@@ -46,35 +50,45 @@ public class UserController {
     }
 
 
-    @GetMapping("/main")
-    public String main(){
-        return "main";
-    }
-    @GetMapping("/newMsg")
-    public String newMsg(){
-        return "newMsg";
-    }
-    @GetMapping("/readMsg")
-    public String readMsg(){
-        return "readMsg";
-    }
-    @GetMapping("/register")
-    public String register(){
-        return "register";
-    }
 
-    @GetMapping("/test")
-    @ResponseBody
-    public String test(){
-        String name = "zhangsan";
-        return name;
-    }
+
+//    @GetMapping("/main")
+//    public String main(){
+//        return "main";
+//    }
+//    @GetMapping("/newMsg")
+//    public String newMsg(){
+//        return "newMsg";
+//    }
+//    @GetMapping("/readMsg")
+//    public String readMsg(){
+//        return "readMsg";
+//    }
+//    @GetMapping("/register")
+//    public String register(){
+//        return "register";
+//    }
+//
+//    @GetMapping("/test")
+//    @ResponseBody
+//    public String test(){
+//        String name = "zhangsan";
+//        return name;
+//    }
+//
+//    @GetMapping("/testMybatis")
+//    @ResponseBody
+//    public Object testMybatis(){
+//        User user = userMapper.findByUid(1);
+//        return user;
+//    }
+
 }
 
 /*
 * 理想结果：
-* 1、当消息查看过后，图标变为已读
-* 2、消息列表优先按时间排列
+* 1、当消息查看过后，图标变为已读 (已完成)
+* 2、消息列表优先按未读到已读，未读中按时间排列，已读中也按时间排列。(已完成)
 * 3、消息太多，做分页处理
 * 4、分为已读消息列表、未读消息列表
 * */

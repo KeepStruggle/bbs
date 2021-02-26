@@ -29,6 +29,6 @@ public class MyMvcConfig implements WebMvcConfigurer {
         registry.addInterceptor(new LoginHandlerInterceptor())
                 .addPathPatterns("/**")
                 //注意：需要放行静态资源的请求
-                .excludePathPatterns("/index.html", "/", "/doLogin", "/test", "/css/*", "/images/*", "/scripts/*");
+                .excludePathPatterns("/testMybatis", "/index.html", "/", "/doLogin", "/test", "/css/*", "/images/*", "/scripts/*");
     }
 }
